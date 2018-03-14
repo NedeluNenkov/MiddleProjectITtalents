@@ -34,6 +34,9 @@ public class User {
 		setUsername(username);
 		setPassword(password, passwordCopy);
 		setEmail(email);
+		this.posts = new TreeSet<>();
+		this.folders = new TreeMap<>();
+		this.folders.put("Untiteled", new TreeSet<>());
 	}
 
 	private void setLastName(String lastName) {
@@ -81,11 +84,31 @@ public class User {
 		this.username = username;
 	}
 
+	public void createFolder(String folderName) {
+		if(folderName == null || folderName.isEmpty()) {
+			throw new IllegalArgumentException("Invalid name for folder");
+		}
+		this.folders.put(folderName, new TreeSet<>());
+	}
+	
+	public void addPost(String folderName, String description) {
+		//TODO path requires the path to the photo/video the User chooses to upload
+		Post post = new Post("here we should write the path", this);
+		post.addDescription(description);
+		if(folderName == null) {
+			this.folders.get("Untiteled").add(post);
+		} else {
+			this.folders.get(folderName).add(post);
+		}
+		this.posts.add(post);
+	}
+	
 	public void writeComment(Post post) {
 		// read Text
-		String text = new Scanner(System.in).nextLine();
-		//TODO
-		//post.addComment(new Comment(this, text));
+		Scanner sc = new Scanner(System.in);
+		String text = sc.nextLine();
+		post.addComment(new Comment(this, text));
+		sc.close();
 	}
 	
 	public String getEmail() {
