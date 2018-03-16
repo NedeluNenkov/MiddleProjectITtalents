@@ -7,8 +7,6 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.activity.InvalidActivityException;
-
 public class User {
 
 	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,3})$",
@@ -119,6 +117,23 @@ public class User {
 		sc.close();
 	}
 	
+	public static User search(String username) {
+		boolean hasUser = false;
+		int userId = 0;
+		for (int i = 0; i < users.size(); i++) {
+			if(users.get(i).getUsername().equals(username)) {
+				hasUser = true;
+				userId = i;
+				break;
+			}
+		}
+		if(hasUser) {
+			return users.get(userId);
+		} else {
+			throw new IllegalArgumentException("User not found!");
+		}
+	}
+	
 	public String getEmail() {
 		return email;
 	}
@@ -148,7 +163,7 @@ public class User {
 	}
 
 	public void logout() {
-		
+		this.setIsLogged(false);
 	}
 
 	public static void register(String username, String firstName, String lastName, String password, String email, String passwordCopy) {
