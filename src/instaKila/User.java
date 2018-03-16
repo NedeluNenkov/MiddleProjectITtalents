@@ -7,6 +7,8 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.activity.InvalidActivityException;
+
 public class User {
 
 	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,3})$",
@@ -20,7 +22,7 @@ public class User {
 	private String email;
 	private TreeSet<Post> posts;
 	private TreeMap<String, TreeSet<Post>> folders;
-	private boolean isLogged = false; // moje da ni trqbva ama ne go polzvame za sega!!!
+	private boolean isLogged = false; 
 	private static ArrayList<User> users;
 	
 	static {
@@ -93,6 +95,9 @@ public class User {
 	
 	public void addPost(String folderName, String description) {
 		//TODO path requires the path to the photo/video the User chooses to upload
+		if(!getIsLogged()) {
+			throw new IllegalAccessError("You must be logged in!");
+		}
 		Post post = new Post("here we should write the path", this);
 		post.addDescription(description);
 		if(folderName == null) {
@@ -104,6 +109,9 @@ public class User {
 	}
 	
 	public void writeComment(Post post) {
+		if(!getIsLogged()) {
+			throw new IllegalAccessError("You must be logged in!");
+		}
 		// read Text
 		Scanner sc = new Scanner(System.in);
 		String text = sc.nextLine();
@@ -123,16 +131,35 @@ public class User {
 		return this.username;
 	}
 	
-	public static boolean login(String username, String password) {
+	public static void login(String username, String password) {
 		for (User us: users) {
 			if((us.getUsername().equals(username) || us.getEmail().equals(username)) && us.getPassword().equals(password)) {
-				return true;
+				us.setIsLogged(true);
 			}
 		}
-		return false;	
+	}
+	
+	private void setIsLogged(boolean isLogged) {
+		this.isLogged = isLogged;
+	}
+	
+	public boolean getIsLogged() {
+		return this.isLogged;
+	}
+
+	public void logout() {
+		
 	}
 
 	public static void register(String username, String firstName, String lastName, String password, String email, String passwordCopy) {
+		for (int i = 0; i < users.size(); i++) {
+			if(users.get(i).getEmail().equals(email) || users.get(i).getUsername().equals(username)) {
+				throw new IllegalArgumentException("A user with this username or email already exists!");
+			}
+		}
+		if(!password.equals(passwordCopy)) {
+			throw new IllegalArgumentException("Passwords do not match!");
+		}
 		users.add(new User(username, firstName, lastName, password, email, passwordCopy));
 	}
 }
