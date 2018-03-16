@@ -7,8 +7,6 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.activity.InvalidActivityException;
-
 public class User {
 
 	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,3})$",
@@ -106,6 +104,20 @@ public class User {
 			this.folders.get(folderName).add(post);
 		}
 		this.posts.add(post);
+	}
+	
+	public void likePost(Post post) {
+		if(!getIsLogged()) {
+			throw new IllegalAccessError("You must be logged in!");
+		}
+		post.likePost(this);
+	}
+	
+	public void dislikePost(Post post) {
+		if(!getIsLogged()) {
+			throw new IllegalAccessError("You must be logged in!");
+		}
+		post.dislikePost(this);
 	}
 	
 	public void writeComment(Post post) {
