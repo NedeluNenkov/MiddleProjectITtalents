@@ -161,10 +161,16 @@ public class User {
 	}
 	
 	public static void login(String username, String password) {
+		boolean exists = false;
 		for (User us: users) {
 			if((us.getUsername().equals(username) || us.getEmail().equals(username)) && us.getPassword().equals(password)) {
+				exists = true;
 				us.setIsLogged(true);
+				break;
 			}
+		}
+		if(!exists) {
+			throw new IllegalArgumentException("Incorrect username/password!");
 		}
 	}
 	
