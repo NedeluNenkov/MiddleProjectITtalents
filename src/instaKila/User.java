@@ -1,7 +1,9 @@
 package instaKila;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
@@ -146,6 +148,10 @@ public class User {
 		} else {
 			throw new IllegalArgumentException("User not found!");
 		}
+	}
+	
+	public Set<Post> getPosts() {
+		return Collections.unmodifiableSet(this.posts);
 	}
 	
 	public String getEmail() {
