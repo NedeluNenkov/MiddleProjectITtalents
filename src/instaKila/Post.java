@@ -10,6 +10,8 @@ public class Post {
 	private int dislikes;
 	private User user;
 	private TreeSet<Comment> comments;
+	private TreeSet<User> listOfLikes;
+	private TreeSet<User> listOfDislikes;
 	
 	public Post(String path, User user) {
 		if (path == null || path.isEmpty()) {
@@ -18,6 +20,8 @@ public class Post {
 		this.path = path;
 		this.user = user;
 		this.comments = new TreeSet<>();
+		this.listOfLikes = new TreeSet<>();
+		this.listOfDislikes = new TreeSet<>();
 	}
 	
 	public void addDescription(String description) {
@@ -27,12 +31,20 @@ public class Post {
 		this.description = description;
 	}
 	
-	public void likePost() {
+	public void likePost(User user) {
+		if (this.listOfLikes.contains(user)) {
+			return;
+		}
 		this.likes++;
+		this.listOfLikes.add(user);
 	}
 	
-	public void dislikePost() {
+	public void dislikePost(User user) {
+		if (this.listOfLikes.contains(user)) {
+			return;
+		}
 		this.dislikes++;
+		this.listOfDislikes.add(user);
 	}
 	
 	public void addComment(Comment comment) {

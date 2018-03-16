@@ -106,6 +106,20 @@ public class User {
 		this.posts.add(post);
 	}
 	
+	public void likePost(Post post) {
+		if(!getIsLogged()) {
+			throw new IllegalAccessError("You must be logged in!");
+		}
+		post.likePost(this);
+	}
+	
+	public void dislikePost(Post post) {
+		if(!getIsLogged()) {
+			throw new IllegalAccessError("You must be logged in!");
+		}
+		post.dislikePost(this);
+	}
+	
 	public void writeComment(Post post) {
 		if(!getIsLogged()) {
 			throw new IllegalAccessError("You must be logged in!");
