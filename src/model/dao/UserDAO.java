@@ -1,7 +1,9 @@
 package model.dao;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.TreeSet;
 
 import model.Comment;
@@ -121,5 +123,9 @@ public class UserDAO {
 			throw new IllegalArgumentException("Passwords do not match!");
 		}
 		users.add(new User(username, firstName, lastName, password, email, passwordCopy));
+	}
+	
+	public Set<Post> getPosts() {
+		return Collections.unmodifiableSet(user.posts);
 	}
 }
