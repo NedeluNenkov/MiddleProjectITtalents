@@ -35,13 +35,21 @@ public class Post {
 		if (this.listOfLikes.contains(user)) {
 			return;
 		}
+		if (this.listOfDislikes.contains(user)) {
+			this.listOfDislikes.remove(user);
+			this.dislikes--;
+		}
 		this.likes++;
 		this.listOfLikes.add(user);
 	}
 	
 	public void dislikePost(User user) {
-		if (this.listOfLikes.contains(user)) {
+		if (this.listOfDislikes.contains(user)) {
 			return;
+		}
+		if (this.listOfLikes.contains(user)) {
+			this.listOfLikes.remove(user);
+			this.likes--;
 		}
 		this.dislikes++;
 		this.listOfDislikes.add(user);
