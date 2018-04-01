@@ -45,8 +45,6 @@ public class Post {
 		this.listOfLikes.add(user);
 	}
 
-	
-
 	public void dislikePost(User user) {
 		if (this.listOfLikes.contains(user)) {
 			return;

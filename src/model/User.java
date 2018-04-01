@@ -1,7 +1,5 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
@@ -9,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class User {
 
-	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,3})$",
+	private static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,3})$",
 			Pattern.CASE_INSENSITIVE);
 	private static final int PASSWORD_MIN_LENGTH = 5;
 	private static final int PASSWORD_MAX_LENGTH = 30;
@@ -18,8 +16,8 @@ public class User {
 	private String lastName;
 	private String password;
 	private String email;
-	public TreeSet<Post> posts;
-	public TreeMap<String, TreeSet<Post>> folders;
+	TreeSet<Post> posts;
+	TreeMap<String, TreeSet<Post>> folders;
 	private boolean isLogged = false; 
 	
 
@@ -99,5 +97,4 @@ public class User {
 	public boolean getIsLogged() {
 		return this.isLogged;
 	}
-
 }

@@ -2,34 +2,30 @@ package model;
 
 import java.time.LocalDate;
 
-public class Comment implements Comparable<Comment>{
+public class Comment {
 
+	private int id;
 	private String text;
 	private User user;
-	private LocalDate date;
 	
-	public Comment(User user, String text) {	
+	public Comment(User user, int id, String text) {	
 		this.setText(text);
+		this.id = id;
 		this.user = user;
-		this.date = LocalDate.now();
 	}
 	
-	public void rewriteText(String comment) {
-		this.setText(comment);
-	}
-	
-	private void setText(String comment) {
+	public void setText(String text) {
 		if (text == null || text.isEmpty()) {
 			throw new IllegalArgumentException("Invalid comment");
 		}
-		this.text = comment;
+		this.text = text;
 	}
-
-	@Override
-	public int compareTo(Comment c) {
-		if (this.date == c.date) {
-			return 1;
-		}
-		return this.date.compareTo(c.date);
+	
+	public int getId() {
+		return id;
+	}
+	
+	public String getText() {
+		return text;
 	}
 }
