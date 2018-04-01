@@ -23,11 +23,6 @@ public class User {
 	private String email;
 	TreeSet<Post> posts;
 	TreeMap<String, TreeSet<Post>> folders;
-	
-	static {
-		users = new ArrayList<>();
-		users.add(new User("Ivancho", "Ivan", "Ivanov", "12345", "ivan@abv.bg"));
-	}
 
 	public User(String username, String firstName, String lastName, String password, String email) {
 		setFirstName(firstName);

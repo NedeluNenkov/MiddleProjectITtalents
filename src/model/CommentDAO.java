@@ -27,15 +27,6 @@ public class CommentDAO implements ICommentDao {
 		statement.setString(2, text);
 		statement.executeUpdate();
 	}
-	
-	public static void main(String[] args) {
-		try {
-			CommentDAO.getInstance().addComment(4,"aja");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 	@Override
 	public void deleteComment(int id) throws SQLException {

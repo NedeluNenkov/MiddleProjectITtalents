@@ -37,7 +37,7 @@ public class CommentManager {
 			e.printStackTrace();
 		}
 	}
-}
+
 	
 	public void deleteComment(int id) {
 		try {
@@ -47,4 +47,5 @@ public class CommentManager {
 			e.printStackTrace();
 		}
 	}
+}
 
