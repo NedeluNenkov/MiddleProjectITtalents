@@ -1,5 +1,9 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
@@ -11,6 +15,7 @@ public class User {
 			Pattern.CASE_INSENSITIVE);
 	private static final int PASSWORD_MIN_LENGTH = 5;
 	private static final int PASSWORD_MAX_LENGTH = 30;
+	private int id;
 	private String username;
 	private String firstName;
 	private String lastName;
@@ -18,18 +23,26 @@ public class User {
 	private String email;
 	TreeSet<Post> posts;
 	TreeMap<String, TreeSet<Post>> folders;
-	private boolean isLogged = false; 
 	
+	static {
+		users = new ArrayList<>();
+		users.add(new User("Ivancho", "Ivan", "Ivanov", "12345", "ivan@abv.bg"));
+	}
 
-	public User(String username, String firstName, String lastName, String password, String email, String passwordCopy) {
+	public User(String username, String firstName, String lastName, String password, String email) {
 		setFirstName(firstName);
 		setLastName(lastName);
 		setUsername(username);
-		setPassword(password, passwordCopy);
+		setPassword(password);
 		setEmail(email);
 		this.posts = new TreeSet<>();
 		this.folders = new TreeMap<>();
 		this.folders.put("Untiteled", new TreeSet<>());
+	}
+	
+	public User(int id, String username, String firstName, String lastName, String password, String email) {
+		this(username, firstName, lastName, password, email);
+		this.id = id;
 	}
 
 	private void setLastName(String lastName) {
@@ -46,11 +59,6 @@ public class User {
 		this.firstName = firstName;
 	}
 
-	private static boolean validate(String emailStr) {
-		Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
-		return matcher.matches();
-	}
-
 	private void setEmail(String email) {
 		if(validate(email)) {
 			this.email = email;
@@ -58,12 +66,42 @@ public class User {
 		this.email = email;
 	}
 
-	private void setPassword(String password, String passwordCopy) {
-		if (password == null || password.isEmpty() || password.length() < PASSWORD_MIN_LENGTH || password.length() > PASSWORD_MAX_LENGTH || !password.equals(passwordCopy)) {
-			throw new IllegalArgumentException("Invalid input");
-		}
-		String generatedSecuredPasswordHash = BCrypt.hashpw(password, BCrypt.gensalt(12));
-		this.password = generatedSecuredPasswordHash;
+	private void setPassword(String password) {
+//		if (password == null || password.isEmpty() || password.length() < PASSWORD_MIN_LENGTH || password.length() > PASSWORD_MAX_LENGTH || !password.equals(passwordCopy)) {
+//			throw new IllegalArgumentException("Invalid input");
+//		}
+		this.password = password;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		return true;
 	}
 
 	private void setUsername(String username) {
@@ -77,6 +115,18 @@ public class User {
 		}
 		this.username = username;
 	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+	
+	public String getLastName() {
+		return lastName;
+	}
+	
+	public Set<Post> getPosts() {
+		return Collections.unmodifiableSet(this.posts);
+	}
 	
 	public String getEmail() {
 		return email;
@@ -89,12 +139,10 @@ public class User {
 	public String getUsername() {
 		return this.username;
 	}
-
-	public void setIsLogged(boolean isLogged) {
-		this.isLogged = isLogged;
-	}
 	
-	public boolean getIsLogged() {
-		return this.isLogged;
+	
+	private static boolean validate(String emailStr) {
+		Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+		return matcher.matches();
 	}
 }

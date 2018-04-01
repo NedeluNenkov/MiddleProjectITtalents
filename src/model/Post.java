@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Collections;
-import java.util.Set;
 import java.util.TreeSet;
 
 public class Post {
@@ -14,7 +12,7 @@ public class Post {
 	private TreeSet<Comment> comments;
 	private TreeSet<User> listOfLikes;
 	private TreeSet<User> listOfDislikes;
-
+	
 	public Post(String path, User user) {
 		if (path == null || path.isEmpty()) {
 			throw new IllegalArgumentException("Invalid input post");
@@ -25,14 +23,14 @@ public class Post {
 		this.listOfLikes = new TreeSet<>();
 		this.listOfDislikes = new TreeSet<>();
 	}
-
+	
 	public void addDescription(String description) {
 		if (description == null) {
 			throw new IllegalArgumentException("Invalid description");
 		}
 		this.description = description;
 	}
-
+	
 	public void likePost(User user) {
 		if (this.listOfLikes.contains(user)) {
 			return;
@@ -46,7 +44,7 @@ public class Post {
 	}
 
 	public void dislikePost(User user) {
-		if (this.listOfLikes.contains(user)) {
+		if (this.listOfDislikes.contains(user)) {
 			return;
 		}
 		if (this.listOfLikes.contains(user)) {
@@ -56,7 +54,7 @@ public class Post {
 		this.dislikes++;
 		this.listOfDislikes.add(user);
 	}
-
+	
 	public void addComment(Comment comment) {
 		this.comments.add(comment);
 	}

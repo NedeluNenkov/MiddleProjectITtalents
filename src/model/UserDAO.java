@@ -6,14 +6,13 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class UserDAO {
+public class UserDAO implements IUserDAO{
 	
-	private User user;
 	private static volatile UserDAO userDao;
-	public static ArrayList<User> users;
+	private Connection connection;
 	
 	private UserDAO() {
-		
+		this.connection = DBManager.getInstance().getConnection();
 	}
 	
 	public static UserDAO getInstance() {
@@ -26,102 +25,70 @@ public class UserDAO {
 		}
 		return userDao;
 	}
-	
-	public void createFolder(String folderName) {
-		if(folderName == null || folderName.isEmpty()) {
-			throw new IllegalArgumentException("Invalid name for folder");
-		}
-		user.folders.put(folderName, new TreeSet<>());
+
+
+	@Override
+	public User getByID(int id) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
-	
-	public void addPost(String folderName, String description) {
-		//TODO path requires the path to the photo/video the User chooses to upload
-		if(!user.getIsLogged()) {
-			throw new IllegalAccessError("You must be logged in!");
-		}
-		Post post = new Post("here we should write the path", user);
-		post.addDescription(description);
-		if(folderName == null) {
-			user.folders.get("Untiteled").add(post);
-		} else {
-			user.folders.get(folderName).add(post);
-		}
-		user.posts.add(post);
-	}
+
+	@Override
+	public void saveUser(User u) throws Exception {
+		// using PreparedStatement we escape SQLInjection !
+				PreparedStatement s = connection.prepareStatement("INSERT INTO users (first_name, last_name, username, password, email) VALUES (?,?,?,?,?)");
+				// we set the values in the order from the query
+				s.setString(1, u.getFirstName());
+				s.setString(2, u.getLastName());
+				s.setString(3, u.getUsername());
+				s.setString(4, u.getPassword());
+				s.setString(5, u.getEmail());
+				s.executeUpdate();
 		
-	public void writeComment(Post post) {
-		if(!user.getIsLogged()) {
-			throw new IllegalAccessError("You must be logged in!");
-		}
-		// read Text
-		Scanner sc = new Scanner(System.in);
-		String text = sc.nextLine();
-		post.addComment(new Comment(user, text));
-		sc.close();
 	}
-	
-	public static User search(String username) {
-		boolean hasUser = false;
-		int userId = 0;
-		for (int i = 0; i < users.size(); i++) {
-			if(users.get(i).getUsername().equals(username)) {
-				hasUser = true;
-				userId = i;
-				break;
+
+	@Override
+	public void changeUser(User u) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Collection<User> getAllPosts() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public User getByUsername(String username) throws Exception {
+		return null;
+	}
+
+	@Override
+	public boolean checkForUser(String username, String password) throws Exception {
+		for (User u : getAllUsers()) {
+			if (username == u.getUsername() && password == u.getPassword()) {
+				return true;
 			}
 		}
-		if(hasUser) {
-			return users.get(userId);
-		} else {
-			throw new IllegalArgumentException("User not found!");
-		}
+		return false;
 	}
-	
-	public static void login(String username, String password) {
-		boolean exists = false;
-		for (User us: users) {
-			if((us.getUsername().equals(username) || us.getEmail().equals(username)) && us.getPassword().equals(password)) {
-				exists = true;
-				us.setIsLogged(true);
-				break;
-			}
+
+	@Override
+	public Collection<User> getAllUsers() throws SQLException {
+		PreparedStatement s = connection.prepareStatement("SELECT username FROM users");
+		HashSet<User> users = new HashSet<>();
+		ResultSet result = s.executeQuery();
+		while(result.next()) {
+			User u = new User(	result.getInt("id"),
+								result.getString("fristName"), 
+								result.getString("lastName"),
+								result.getString("username"), 
+								result.getString("email"),
+								result.getString("pasword"));
+			users.add(u);
 		}
-		if(!exists) {
-			throw new IllegalArgumentException("Incorrect username/password!");
-		}
+		return users;
 	}
-	
-	public void likePost(Post post) {
-		if(!user.getIsLogged()) {
-			throw new IllegalAccessError("You must be logged in!");
-		}
-		post.likePost(user);
-	}
-	
-	public void dislikePost(Post post) {
-		if(!user.getIsLogged()) {
-			throw new IllegalAccessError("You must be logged in!");
-		}
-		post.dislikePost(user);
-	}
-	
-	public void logout() {
-		user.setIsLogged(false);
-	}
-	
-	public static void register(String username, String firstName, String lastName, String password, String email, String passwordCopy) {
-		for (int i = 0; i < users.size(); i++) {
-			if(users.get(i).getEmail().equals(email) || users.get(i).getUsername().equals(username)) {
-				throw new IllegalArgumentException("A user with this username or email already exists!");
-			}
-		}
-		if(!password.equals(passwordCopy)) {
-			throw new IllegalArgumentException("Passwords do not match!");
-		}
-		users.add(new User(username, firstName, lastName, password, email, passwordCopy));
-	}
-	
-	public Set<Post> getPosts() {
-		return Collections.unmodifiableSet(user.posts);
-	}
+
 }
