@@ -4,14 +4,18 @@ import java.time.LocalDate;
 
 public class Comment {
 
-	private int id;
+	private long id;
 	private String text;
 	private User user;
 	
-	public Comment(User user, int id, String text) {	
-		this.setText(text);
-		this.id = id;
+	public Comment(User user, String text) {
 		this.user = user;
+		setText(text);
+	}
+	
+	public Comment(int id, String text) {
+		this.id = id;
+		setText(text);
 	}
 	
 	public void setText(String text) {
@@ -21,8 +25,12 @@ public class Comment {
 		this.text = text;
 	}
 	
-	public int getId() {
+	public long getId() {
 		return id;
+	}
+	
+	public void setId(long id) {
+		this.id = id;
 	}
 	
 	public String getText() {

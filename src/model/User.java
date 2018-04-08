@@ -15,7 +15,7 @@ public class User {
 			Pattern.CASE_INSENSITIVE);
 	private static final int PASSWORD_MIN_LENGTH = 5;
 	private static final int PASSWORD_MAX_LENGTH = 30;
-	private int id;
+	private long id;
 	private String username;
 	private String firstName;
 	private String lastName;
@@ -46,6 +46,10 @@ public class User {
 		}
 		this.lastName = lastName;
 	}
+	
+	public long getId() {
+		return id;
+	}
 
 	private void setFirstName(String firstName) {
 		if (firstName == null || firstName.isEmpty()) {
@@ -59,6 +63,10 @@ public class User {
 			this.email = email;
 		}
 		this.email = email;
+	}
+	
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	private void setPassword(String password) {

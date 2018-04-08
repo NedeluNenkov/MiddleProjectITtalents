@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import model.Comment;
 import model.CommentDAO;
+import model.User;
 
 public class CommentManager {
 	
@@ -26,12 +27,13 @@ public class CommentManager {
 		}
 	}
 	
-	public void createComment(int id, String text) {
+	public void createComment(User user, String text) {
 		if(text == null || text.isEmpty()) {
 			throw new IllegalAccessError("Invalid text");
 		}
 		try {
-			CommentDAO.getInstance().addComment(id, text);
+			Comment comment = new Comment(user, text);
+			CommentDAO.getInstance().addComment(comment);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

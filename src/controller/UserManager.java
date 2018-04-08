@@ -56,7 +56,7 @@ public class UserManager {
 			throw new IllegalArgumentException("Passwords do not match!");
 		}
 		try {
-			for (User user : UserDAO.getInstance().getAllUsers()) {
+			for (User user : UserDAO.getInstance().getAllUsers().values()) {
 				if (user.getUsername() == username || user.getEmail() == email) {
 					throw new IllegalArgumentException("User with this sername/email already exists");
 				}
@@ -102,25 +102,14 @@ public class UserManager {
 //		sc.close();
 //	}
 	
-//	public User search(String username) {
-//		if (username == null || username.isEmpty()) {
-//			throw new IllegalArgumentException("No match found");
-//			return ;
-//		}
-//		UserDAO.getInstance().getByUsername(username);
-//		for (int i = 0; i < users.size(); i++) {
-//			if(users.get(i).getUsername().equals(username)) {
-//				hasUser = true;
-//				userId = i;
-//				break;
-//			}
-//		}
-//		if(hasUser) {
-//			return users.get(userId);
-//		} else {
-//			throw new IllegalArgumentException("User not found!");
-//		}
-//	}
+	public User search(String username) {
+		UserDAO udao = UserDAO.getInstance();
+		if(udao.getAllUsers().containsKey(username)) {
+			return udao.getAllUsers().get(username);
+		} else {
+			throw new IllegalArgumentException("User not found!");
+		}
+	}
 	
 //	public void likePost(int id, Post post) {
 //		if(id == 0) {
