@@ -109,11 +109,11 @@ public class User {
 
 	private void setUsername(String username) {
 		if (username == null || username.isEmpty()) {
-			throw new IllegalArgumentException("Invalid input");
+			throw new IllegalArgumentException("Username must not be empty!");
 		}
 		for (int i = 0; i < username.length(); i++) {
 			if (!Character.isAlphabetic(username.charAt(i))) {
-				throw new IllegalArgumentException("Invalid input");
+				throw new IllegalArgumentException("Username must not contain any non-alphabetic symbols!");
 			}
 		}
 		this.username = username;

@@ -32,41 +32,44 @@ public class UserManager {
 		return instance;
 	}
 
-	public void login(String username, String password) {
+	public boolean login(String username, String password) {
 		boolean exists;
 		try {
 			exists = UserDAO.getInstance().checkForUser(username, password);
 			if (!exists) {
-				throw new IllegalArgumentException("Incorrect username/password!");
+				return false;
 			} else {
 				this.loggedUsers.add(UserDAO.getInstance().getByUsername(username));
+				return true;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
+		return false;
 	}
 	
 	public void logout(User u) {
 		this.loggedUsers.remove(u);
 	}
 
-	public void register(String username, String firstName, String lastName, String password, String email,
+	public boolean register(String username, String firstName, String lastName, String password, String email,
 			String passwordCopy) {
 		if (!password.equals(passwordCopy)) {
-			throw new IllegalArgumentException("Passwords do not match!");
+			return false;
 		}
 		try {
 			for (User user : UserDAO.getInstance().getAllUsers().values()) {
 				if (user.getUsername() == username || user.getEmail() == email) {
-					throw new IllegalArgumentException("User with this sername/email already exists");
+					return false;
 				}
 			}
 			User u = new User(username, firstName, lastName, passwordCopy, email);
 			UserDAO.getInstance().saveUser(u);
-		} catch (Exception e) {
-			e.printStackTrace();
+			return true;
+		} catch (SQLException | IllegalArgumentException e) {
+			System.out.println(e.getMessage());
 		}
-		
+		return true;
 	}
 	
 //	public void createFolder(String folderName) {
@@ -103,7 +106,13 @@ public class UserManager {
 //	}
 	
 	public User search(String username) {
-		UserDAO udao = UserDAO.getInstance();
+		UserDAO udao = null;
+		try {
+			udao = UserDAO.getInstance();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if(udao.getAllUsers().containsKey(username)) {
 			return udao.getAllUsers().get(username);
 		} else {

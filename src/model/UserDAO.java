@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.mysql.jdbc.Statement;
+import java.sql.Statement;
 
 public class UserDAO implements IUserDAO{
 	
@@ -27,11 +27,12 @@ public class UserDAO implements IUserDAO{
 		this.connection = DBManager.getInstance().getConnection();
 	}
 	
-	public static UserDAO getInstance() {
+	public static UserDAO getInstance() throws SQLException {
 		if(userDao == null) {
 			synchronized (UserDAO.class) {
 				if(userDao == null) {
 					userDao = new UserDAO();
+					userDao.getUsersFromDb();
 				}
 			}
 		}
@@ -55,13 +56,13 @@ public class UserDAO implements IUserDAO{
 
 
 	@Override
-	public User getByID(int id) throws Exception {
+	public User getByID(int id) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void saveUser(User u) throws Exception {
+	public void saveUser(User u) throws SQLException {
 		// using PreparedStatement we escape SQLInjection !
 				PreparedStatement s = connection.prepareStatement("INSERT INTO users (first_name, last_name, username, password, email) VALUES (?,?,?,?,?)",
 						Statement.RETURN_GENERATED_KEYS);
@@ -97,13 +98,13 @@ public class UserDAO implements IUserDAO{
 	}
 
 	@Override
-	public Collection<User> getAllPosts() throws Exception {
+	public Collection<User> getAllPosts() throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public User getByUsername(String username) throws Exception {
+	public User getByUsername(String username) throws SQLException {
 		if(allUsers.containsKey(username)) {
 			return allUsers.get(username);
 		} else {
@@ -113,7 +114,7 @@ public class UserDAO implements IUserDAO{
 	}
 
 	@Override
-	public boolean checkForUser(String username, String password) throws Exception {
+	public boolean checkForUser(String username, String password) {
 		for (User u : getAllUsers().values()) {
 			if (username == u.getUsername() && password == u.getPassword()) {
 				return true;

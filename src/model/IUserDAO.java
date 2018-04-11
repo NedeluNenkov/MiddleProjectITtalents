@@ -6,12 +6,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public interface IUserDAO {
 
-	User getByID(int id) throws Exception;
-	User getByUsername(String username) throws Exception;
-	void saveUser(User u) throws Exception;
+	User getByID(int id) throws SQLException;
+	User getByUsername(String username) throws SQLException;
+	void saveUser(User u) throws SQLException;
 	void changeUser(User u) throws SQLException;
-	boolean checkForUser(String username, String password) throws Exception;
+	boolean checkForUser(String username, String password);
 	ConcurrentHashMap<String, User> getAllUsers();
-	Collection<User> getAllPosts() throws Exception;
+	Collection<User> getAllPosts() throws SQLException;
 	void getUsersFromDb() throws SQLException;
 }
