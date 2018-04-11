@@ -1,30 +1,94 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>InstaKilla</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="AdminLTE.min.css">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="blue.css">
 
-	<form action="register" method="post" required>
-	Username <input type="text" name = "username" required><br>
-   	Password <input type="password" name = "password" required><br>
-   	Password Copy <input type="password" name = "passwordCopy" required><br>
-   	First Name <input type="text" name = "firstName" required><br>
-   	Last Name <input type="text" name = "lastName" required><br>
-   	Email <input type="text" name = "email" required><br>
-   	<button type="submit">Register</button>
-   	</form>
-<%
-String login_msg=(String)request.getAttribute("error");  
-if(login_msg!=null) {
-out.println("<font color=red size=4px>"+login_msg+"</font>");
-} else {
-	out.println("Successful registration");
-}
-%>
-</body>
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Google Font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+</head>
+<body class="hold-transition register-page">
+<div class="register-box">
+  <div class="register-logo">
+    <a href="login.jsp"><b>Insta</b>Killa</a>
+  </div>
+
+  <div class="register-box-body">
+    <p class="login-box-msg">Register a new membership</p>
+
+    <form action="register" method="post">
+      <div class="form-group has-feedback">
+        <input name="username"type="text" class="form-control" placeholder="Username" required>
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input name="firstName" type="text" class="form-control" placeholder="First name" required>
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input name="lastName" type="text" class="form-control" name="" placeholder="Last name" required>
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input name="email"type="email" class="form-control" placeholder="Email" required>
+        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input name="password" type="password" class="form-control" placeholder="Password" required>
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input name="passwordCopy" type="password" class="form-control" placeholder="Retype password" required>
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+        <!-- /.col -->
+        <div class="col-xs-4">
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
+        </div>
+         </form>
+        <!-- /.col -->
+         <a href="login.jsp" class="text-center">I already have a membership</a>
+      </div>
+   
+   
+  </div>
+  <!-- /.form-box -->
+<!-- /.register-box -->
+
+<!-- jQuery 3 -->
+<script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- iCheck -->
+<script src="../../plugins/iCheck/icheck.min.js"></script>
+<script>
+  $(function () {
+    $('input').iCheck({
+      checkboxClass: 'icheckbox_square-blue',
+      radioClass: 'iradio_square-blue',
+      increaseArea: '20%' /* optional */
+    });
+  });
+</script>
 </body>
 </html>

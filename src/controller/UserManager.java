@@ -43,7 +43,7 @@ public class UserManager {
 				return true;
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		return false;
 	}
@@ -67,7 +67,7 @@ public class UserManager {
 			UserDAO.getInstance().saveUser(u);
 			return true;
 		} catch (SQLException | IllegalArgumentException e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		return false;
 	}

@@ -41,15 +41,15 @@ public class UserDAO implements IUserDAO{
 	
 	//if needed use to get all the users from the db to the collection
 	public void getUsersFromDb() throws SQLException {
-		PreparedStatement s = connection.prepareStatement("SELECT username FROM users");
+		PreparedStatement s = connection.prepareStatement("SELECT * FROM users");
 		ResultSet result = s.executeQuery();
 		while(result.next()) {
-			User u = new User(	result.getInt("id"),
-								result.getString("fristName"), 
-								result.getString("lastName"),
+			User u = new User(	result.getLong("id"),
 								result.getString("username"), 
+								result.getString("first_name"), 
+								result.getString("last_name"),
 								result.getString("email"),
-								result.getString("pasword"));
+								result.getString("password"));
 			allUsers.put(result.getString("username"), u);
 		}
 	}
@@ -73,7 +73,9 @@ public class UserDAO implements IUserDAO{
 				s.setString(4, u.getPassword());
 				s.setString(5, u.getEmail());
 				s.executeUpdate();
-				u.setId(s.getGeneratedKeys().getLong(1));
+				ResultSet rs = s.getGeneratedKeys();
+				rs.next();
+				u.setId(rs.getLong(1));
 				s.close();
 				//putting in the collection with all registered users
 				allUsers.put(u.getUsername(), u);

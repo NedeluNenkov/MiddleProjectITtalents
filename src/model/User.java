@@ -35,7 +35,7 @@ public class User {
 		this.folders.put("Untiteled", new TreeSet<>());
 	}
 	
-	public User(int id, String username, String firstName, String lastName, String password, String email) {
+	public User(long id, String username, String firstName, String lastName, String password, String email) {
 		this(username, firstName, lastName, password, email);
 		this.id = id;
 	}
