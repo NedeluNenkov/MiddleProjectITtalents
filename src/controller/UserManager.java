@@ -69,7 +69,7 @@ public class UserManager {
 		} catch (SQLException | IllegalArgumentException e) {
 			System.out.println(e.getMessage());
 		}
-		return true;
+		return false;
 	}
 	
 //	public void createFolder(String folderName) {

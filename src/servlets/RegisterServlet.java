@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,6 +23,11 @@ public class RegisterServlet extends HttpServlet {
 		String password = req.getParameter("password");
 		String email = req.getParameter("email");
 		String passwordCopy = req.getParameter("passwordCopy");
-		UserManager.getInstance().register(username, firstName, lastName, password, email, passwordCopy);
+		boolean registerSucceful = UserManager.getInstance().register(username, firstName, lastName, password, email, passwordCopy);
+		if (!registerSucceful) {
+			req.setAttribute("error","Invalid input");
+			RequestDispatcher rd=req.getRequestDispatcher("/register.jsp");            
+			rd.include(req, resp);
+		}
 	}
 }

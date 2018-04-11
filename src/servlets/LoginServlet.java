@@ -2,7 +2,7 @@ package servlets;
 
 import java.io.IOException;
 
-
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,7 +24,13 @@ public class LoginServlet extends HttpServlet {
 		if(username == null || password == null) {
 			throw new IllegalArgumentException("Username/password cannot be empty!");
 		}
-		UserManager.getInstance().login(username, password);
+		boolean hasLogged = UserManager.getInstance().login(username, password);
+		
+		if(!hasLogged) {
+			req.setAttribute("error","Invalid Username or Password");
+			RequestDispatcher rd=req.getRequestDispatcher("/login.jsp");            
+			rd.include(req, resp);
+		}
 		
 	}
 	
