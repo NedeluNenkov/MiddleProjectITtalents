@@ -32,7 +32,6 @@ public class UserDAO implements IUserDAO{
 			synchronized (UserDAO.class) {
 				if(userDao == null) {
 					userDao = new UserDAO();
-					userDao.getUsersFromDb();
 				}
 			}
 		}
@@ -41,7 +40,7 @@ public class UserDAO implements IUserDAO{
 	
 	//if needed use to get all the users from the db to the collection
 	public void getUsersFromDb() throws SQLException {
-		PreparedStatement s = connection.prepareStatement("SELECT * FROM users");
+		PreparedStatement s = connection.prepareStatement("SELECT id, username, first_name, last_name, email, password FROM users");
 		ResultSet result = s.executeQuery();
 		while(result.next()) {
 			User u = new User(	result.getLong("id"),
